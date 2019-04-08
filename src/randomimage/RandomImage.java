@@ -101,39 +101,21 @@ public class RandomImage {
         r = (int) (f(0) * 255);
         g = (int) (f(8) * 255);
         b = (int) (f(4) * 255);
-//        double c = ((1 - Math.abs(2 * l - 1)) * s);
-//        double x = (c * (1 - Math.abs((h / 60) % 2 - 1)));
-//        double m = ((l - c) / 2);
-//        double auxr, auxg, auxb;
-//        if (h < 60) {
-//            auxr = c;
-//            auxg = x;
-//            auxb = 0;
-//        } else if (h < 120) {
-//            auxr = x;
-//            auxg = c;
-//            auxb = 0;
-//        } else if (h < 180) {
-//            auxr = 0;
-//            auxg = c;
-//            auxb = x;
-//        } else if (h < 240) {
-//            auxr = 0;
-//            auxg = x;
-//            auxb = c;
-//        } else if (h < 300) {
-//            auxr = x;
-//            auxg = 0;
-//            auxb = c;
-//        } else {
-//            auxr = c;
-//            auxg = 0;
-//            auxb = x;
-//        }
-//        r = (int) ((auxr + m) * 255);
-//        g = (int) ((auxg + m) * 255);
-//        b = (int) ((auxb + m) * 255);
+    }
 
+    public void generateAnal() {
+        Random rng = new Random();
+        randomColor();
+        for (int i = 0; i < 5; i++) {
+            fillBand(height * i / 5, height * (i + 1) / 5);
+            int aux = rng.nextInt(30) + 1;
+            if (rng.nextBoolean()) {
+                aux *= -1;
+            }
+            RGBtoHSL();
+            h = (h + aux) % 360;
+            HSLtoRGB();
+        }
     }
 
     public void generatePastel() {
@@ -148,6 +130,13 @@ public class RandomImage {
         }
     }
 
+    public void generateRandom() {
+        for (int i = 0; i < 5; i++) {
+            randomColor();
+            fillBand(height * i / 5, height * (i + 1) / 5);
+        }
+    }
+
     public void program() {
 
         img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -156,29 +145,7 @@ public class RandomImage {
         //create random image pixel by pixel
         a = 255; //alpha
         Random rng = new Random();
-        generatePastel();
-//        if (rng.nextBoolean()) {
-//            randomColor();
-//            fillBand(0, height * 1 / 3);
-//            randomColor();
-//            fillBand(height * 1 / 3, height * 2 / 3);
-//            randomColor();
-//            fillBand(height * 2 / 3, height);
-//        } else {
-////        randomColor();
-////        RGBtoHSL();
-////        HSLtoRGB();
-////        fillBand(0, height * 1 / 5);
-////        randomColor();
-////        fillBand(height * 1 / 5, height * 2 / 5);
-////        randomColor();
-////        fillBand(height * 2 / 5, height * 3 / 5);
-////        randomColor();
-////        fillBand(height * 3 / 5, height * 4 / 5);
-////        randomColor();
-////        fillBand(height * 4 / 5, height);
-//        }
-
+        generateAnal();
         //write image
         try {
             f = new File("C:\\Image\\Output.png");
