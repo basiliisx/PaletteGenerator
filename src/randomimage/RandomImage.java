@@ -108,13 +108,24 @@ public class RandomImage {
         randomColor();
         for (int i = 0; i < 5; i++) {
             fillBand(height * i / 5, height * (i + 1) / 5);
-            int aux = rng.nextInt(30) + 1;
-            if (rng.nextBoolean()) {
-                aux *= -1;
-            }
+            int aux = rng.nextInt(15);
             RGBtoHSL();
             h = (h + aux) % 360;
             HSLtoRGB();
+        }
+    }
+
+    public void generatePastelAnal() {
+        Random rng = new Random();
+        randomColor();
+        for (int i = 0; i < 5; i++) {
+            RGBtoHSL();
+            s = 0.9 + rng.nextDouble() * 0.1;
+            l = 0.75 + rng.nextDouble() * 0.25;
+            HSLtoRGB();
+            fillBand(height * i / 5, height * (i + 1) / 5);
+            int aux = rng.nextInt(15);
+            h = (h + aux) % 360;
         }
     }
 
@@ -145,10 +156,15 @@ public class RandomImage {
         //create random image pixel by pixel
         a = 255; //alpha
         Random rng = new Random();
-        generateAnal();
+        generatePastelAnal();
         //write image
         try {
-            f = new File("C:\\Image\\Output.png");
+            int i = 1;
+            f = new File("C:\\Image\\Output"+i+".png");
+            while(f.exists()){
+                i++;
+                f = new File("C:\\Image\\Output"+i+".png");
+            }
             ImageIO.write(img, "png", f);
         } catch (IOException e) {
             System.out.println("Error: " + e);
